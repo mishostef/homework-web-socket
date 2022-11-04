@@ -27,6 +27,19 @@
     border: none;
 }
 
+#chat-output {
+    display: flex;
+    flex-direction: column;
+}
+
+.right {
+    align-self: flex-end;
+}
+
+p {
+    margin: 0 5px;
+}
+
 .author {
     color: greenyellow;
     font-style: italic;

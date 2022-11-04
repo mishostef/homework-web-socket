@@ -26,15 +26,17 @@ function init(roomId) {
         const output = document.getElementById('chat-output');
         const author = document.createElement('p');
         author.classList.add('author');
+        const lastMessage = document.createElement('p');
+        lastMessage.classList.add('message-text');
+        lastMessage.textContent = message;
         if (sym === symbol) {
             author.textContent = `${new Date().getHours()} : ${new Date().getMinutes()}  You said:`;
+            author.classList.add('right');
+            lastMessage.classList.add('right');
         } else {
             author.textContent = `${new Date().getHours()} : ${new Date().getMinutes()}  ${sym} said:`;
         }
         output.appendChild(author);
-        const lastMessage = document.createElement('p');
-        lastMessage.classList.add('message-text')
-        lastMessage.textContent = message;
         output.appendChild(lastMessage);
     })
 
