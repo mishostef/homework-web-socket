@@ -1,0 +1,61 @@
+#board,
+#chat {
+    width: 150px;
+    display: none;
+    margin-bottom: 100px;
+}
+
+#chat-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+
+}
+
+#chat-output,
+#message-form {
+    width: 300px;
+    min-width: 300px;
+    border: 1px solid greenyellow;
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+#message-form,
+#chat-output:empty {
+    border: none;
+}
+
+.author {
+    color: greenyellow;
+    font-style: italic;
+    font-family: 'Poor Story', 'Times New Roman', Times, serif;
+}
+
+.message-text {
+    color: blueviolet;
+    font-family: 'League Gothic', 'Times New Roman', Times, serif;
+}
+
+.row {
+    height: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+.row::after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    float: left;
+    margin: 0;
+    padding: 0;
+}

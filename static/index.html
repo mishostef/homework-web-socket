@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Gothic&display=swap" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="./app.js" type="module"></script>
+</head>
+
+<body>
+    <h1>Tic-Tac-Toe</h1>
+
+    <div id="init">
+        <h2>Room name</h2>
+        <form id="init-form">
+            <input type="text" name="room">
+            <input type="submit" value="Enter room">
+        </form>
+    </div>
+
+    <div id="board">
+        <div class="row">
+            <div id="00" class="cell"></div>
+            <div id="01" class="cell"></div>
+            <div id="02" class="cell"></div>
+        </div>
+        <div class="row">
+            <div id="10" class="cell"></div>
+            <div id="11" class="cell"></div>
+            <div id="12" class="cell"></div>
+        </div>
+        <div class="row">
+            <div id="20" class="cell"></div>
+            <div id="21" class="cell"></div>
+            <div id="22" class="cell"></div>
+        </div>
+    </div>
+    <div id="chat">
+        <p class="message-text">Room chat:</p>
+        <div id="chat-wrapper">
+            <form id="message-form">
+                <textarea name="text" id="text" cols="30" rows="10" placeholder="enter message to room"></textarea>
+                <input type="submit" value="Send">
+            </form>
+            <div id="chat-output"></div>
+        </div>
+
+    </div>
+</body>
+
+</html>
