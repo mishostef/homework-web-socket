@@ -22,11 +22,15 @@ function init(roomId) {
         startGame();
     });
 
-    socket.on('message', ({ message, symbol }) => {
+    socket.on('message', ({ message, symbol: sym }) => {
         const output = document.getElementById('chat-output');
-        const author =document.createElement('p');
+        const author = document.createElement('p');
         author.classList.add('author');
-        author.textContent = `${new Date().getHours()} : ${new Date().getMinutes()}  ${symbol} said:`;
+        if (sym === symbol) {
+            author.textContent = `${new Date().getHours()} : ${new Date().getMinutes()}  You said:`;
+        } else {
+            author.textContent = `${new Date().getHours()} : ${new Date().getMinutes()}  ${sym} said:`;
+        }
         output.appendChild(author);
         const lastMessage = document.createElement('p');
         lastMessage.classList.add('message-text')
