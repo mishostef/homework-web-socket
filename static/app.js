@@ -12,9 +12,18 @@ function onSubmit(event) {
 function init(roomId) {
     socket = io();
     socket.on('connect', () => {
-        socket.emit('selectRoom', roomId);
+        console.log('socket id= ', socket.id);
+        const prevId = localStorage.getItem('prevId');
+        socket.emit('selectRoom', { roomId, prevId }).then(Promise.resolve(
+         localStorage.setItem('prevId', socket.id)));
     });
 
+    socket.on('prevData', prevData => {
+        alert(prevData);
+        JSON.parse(prevData).forEach(x => {
+            appendMessage(...Object.values(x));
+        });
+    });
     socket.on('symbol', newSymbol => {
         symbol = newSymbol;
         socket.on('position', place);
@@ -23,23 +32,9 @@ function init(roomId) {
     });
 
     socket.on('message', ({ message, symbol: sym }) => {
-        const output = document.getElementById('chat-output');
-        const author = document.createElement('p');
-        author.classList.add('author');
-        const lastMessage = document.createElement('p');
-        lastMessage.classList.add('message-text');
-        lastMessage.textContent = message;
-        if (sym === symbol) {
-            author.textContent = `${new Date().getHours()} : ${new Date().getMinutes()}  You said:`;
-            author.classList.add('right');
-            lastMessage.classList.add('right');
-        } else {
-            author.textContent = `${new Date().getHours()} : ${new Date().getMinutes()}  ${sym} said:`;
-        }
-        output.appendChild(author);
-        output.appendChild(lastMessage);
-    })
-
+        appendMessage(message, sym);
+        localStorage.setItem('prevId', socket.id);
+    });
     socket.on('error', error => alert(error));
 }
 
@@ -56,6 +51,25 @@ const combinations = [
     ['00', '11', '22'],
     ['02', '11', '20']
 ];
+function appendMessage(message, sym, date = new Date()) {
+    const output = document.getElementById('chat-output');
+    const author = document.createElement('p');
+    author.classList.add('author');
+    const lastMessage = document.createElement('p');
+    lastMessage.classList.add('message-text');
+    lastMessage.textContent = message;
+    const d = new Date(date);
+    if (sym === symbol) {
+        author.textContent = `${d.getHours()} : ${d.getMinutes()}  You said:`;
+        author.classList.add('right');
+        lastMessage.classList.add('right');
+    } else {
+        author.textContent = `${d.getHours()} : ${d.getMinutes()}  ${sym} said:`;
+    }
+    output.appendChild(author);
+    output.appendChild(lastMessage);
+}
+
 function startGame() {
     document.getElementById('init').style.display = 'none';
     const board = document.getElementById('board');
@@ -84,7 +98,6 @@ function handleMessage(e) {
         symbol
     });
     form.reset();
-
 }
 
 function onClick(event) {
@@ -92,7 +105,6 @@ function onClick(event) {
         if (event.target.textContent == '') {
             const id = event.target.id;
             console.log(id);
-            //place(id)
             socket.emit('position', {
                 id,
                 symbol

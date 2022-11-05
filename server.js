@@ -9,12 +9,14 @@ const io = socketIO(server);
 
 
 const rooms = {};
-
+let pastMessages = [];//[{message,symbol,time,}]
+let pastIds = [];
 
 io.on('connect', socket => {
+    ``
     console.log('player connected');
 
-    socket.on('selectRoom', roomId => {
+    socket.on('selectRoom', ({ roomId, prevId }) => {
         if (rooms[roomId] == undefined) {
             rooms[roomId] = new Map();
         }
@@ -26,9 +28,11 @@ io.on('connect', socket => {
         } else {
             socket.join(roomId);
             initGame(roomId, players, socket);
+            if (pastIds.includes(prevId)) {///return prev messages
+                socket.emit('prevData', JSON.stringify(pastMessages));
+            }
         }
     });
-
 });
 
 function initGame(roomId, players, socket) {
@@ -42,15 +46,21 @@ function initGame(roomId, players, socket) {
         console.log('new game started');
         io.to(roomId).emit('newGame');
     });
-    ///////////////
+
     socket.on('message', (data) => {
-        console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data)); console.log('socketId=', socket.id)
+        pastMessages.push({ message: data.message, symbol: data.symbol, time: new Date().toISOString(), });
         io.to(roomId).emit('message', data);
+
     });
 
     socket.on('disconnect', () => {
-        console.log('Player left');
+        console.log(`Player id = ${socket.id} left`);
+        console.log(JSON.stringify(pastIds));
+        console.log(players.size);
+        console.log(JSON.stringify(pastMessages))
         players.delete(socket);
+
     });
     symbol = 'X';
     if (players.size > 0) {
@@ -60,6 +70,7 @@ function initGame(roomId, players, socket) {
         }
     }
     players.set(socket, symbol);
+    pastIds.push(socket.id);
     console.log('Assigning symbol', symbol);
     socket.emit('symbol', symbol);
 
